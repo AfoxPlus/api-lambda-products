@@ -1,6 +1,9 @@
 import type { AWS } from '@serverless/typescript';
 
-import fetch from '@functions/product/fetch'
+import filter from '@functions/product/filter'
+import find from '@functions/product/find'
+import stock from '@functions/product/stock'
+import strategy from '@functions/product/strategy'
 
 const serverlessConfiguration: AWS = {
   service: 'api-nodejs-products',
@@ -25,7 +28,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: '20201221',
   },
   // import the function via paths
-  functions: { fetch },
+  functions: { filter, find, stock, strategy },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',
