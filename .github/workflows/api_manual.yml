@@ -21,11 +21,11 @@ jobs:
         cat > env.json << EOF
         {
           "prod": {
-            "MONGODBCONNECTION": "",
+            "MONGODBCONNECTION": "${{ secrets.AWS_KEY }}",
             "JWT_SECRET": ""
           },
           "dev": {
-            "MONGODBCONNECTION": "",
+            "MONGODBCONNECTION": ${{ secrets.AWS_SECRET }},
             "JWT_SECRET": ""
           }
         }
