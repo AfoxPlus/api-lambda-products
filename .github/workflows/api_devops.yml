@@ -13,16 +13,33 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         node-version: '14.x'
+        
     - name: Install Serverless Framework
       run: npm install -g serverless
+
+    - name: Install NPM dependencies
+      run: npm install
+
     - name: Serverless AWS authentication
-      run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+      run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }} --profile YaListoApp
+
     - name: Create env file
       run: |
         cat > env.json << EOF
-        ${{ secrets.ENV }}
+        {
+          "prod": {
+            "MONGODBCONNECTION": "",
+            "JWT_SECRET": ""
+          },
+          "dev": {
+            "MONGODBCONNECTION": "",
+            "JWT_SECRET": ""
+          }
+        }
         EOF
-    - name: Install NPM dependencies
-      run: npm install
+
+    - name: Print env.json
+      run: cat env.json
+
     - name: Deploy Lambda functions
-      run: sls deploy -s prod
+      run: serverless deploy --stage prod
