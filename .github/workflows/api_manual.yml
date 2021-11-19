@@ -1,0 +1,28 @@
+name: Deploy Dev
+
+on: [workflow_dispatch]
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '14.x'
+    - name: Install Serverless Framework
+      run: npm install -g serverless
+    - name: Serverless AWS authentication
+      run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }}
+    - name: Create env file
+      run: |
+        cat > env.json << EOF
+        ${{ secrets.ENV }}
+        EOF
+    - name: Install NPM dependencies
+      run: npm install
+    # Optional
+    #- name: Build assets
+    #  run: npm run assets-dev
+    - name: Deploy Lambda functions
+      run: sls deploy -s dev
