@@ -25,4 +25,4 @@ jobs:
     #- name: Build assets
     #  run: npm run assets-dev
     - name: Deploy Lambda functions
-      run: sls deploy -s dev
+      run: serverless deploy --stage dev

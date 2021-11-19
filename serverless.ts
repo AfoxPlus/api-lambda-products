@@ -17,8 +17,8 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      MONGODB: '${self:custom.env.${opt:stage}.MONGODBCONNECTION}',
-      JWT_SECRET: '${self:custom.env.${opt:stage}.JWT_SECRET}',
+      //MONGODB: '${self:custom.env.${opt:stage}.MONGODBCONNECTION}',
+      //JWT_SECRET: '${self:custom.env.${opt:stage}.JWT_SECRET}',
       VERSION: '${self:custom.version}',
       STAGE: '${opt:stage}',
     },
