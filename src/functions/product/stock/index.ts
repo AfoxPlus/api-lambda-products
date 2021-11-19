@@ -6,7 +6,7 @@ export default {
     {
       http: {
         method: 'get',
-        path: 'product/{description}/{restaurantId}'
+        path: 'product/stock/{code}'
       }
     }
   ]
