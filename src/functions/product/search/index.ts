@@ -6,13 +6,7 @@ export default {
     {
       http: {
         method: 'get',
-        path: 'product/{code}'
-      }
-    },
-    {
-      http: {
-        method: 'get',
-        path: 'product/{code}/{measure}'
+        path: 'product/search/{code}/{measure}'
       }
     }
   ]
