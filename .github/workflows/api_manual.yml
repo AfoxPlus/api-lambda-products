@@ -19,8 +19,19 @@ jobs:
     - name: Create env file
       run: |
         cat > env.json << EOF
-        ${{ secrets.ENV }}
+        {
+          "prod": {
+            "MONGODBCONNECTION": "",
+            "JWT_SECRET": ""
+          },
+          "dev": {
+            "MONGODBCONNECTION": "",
+            "JWT_SECRET": ""
+          }
+        }
         EOF
+    - name: Print env.json
+      run: cat env.json
     # Optional
     #- name: Build assets
     #  run: npm run assets-dev
