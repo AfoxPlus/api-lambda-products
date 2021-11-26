@@ -7,7 +7,7 @@ import search from '@functions/search'
 import register from '@functions/register'
 
 const serverlessConfiguration: AWS = {
-  service: 'api-nodejs-products',
+  service: 'api-lambda-products',
   frameworkVersion: '2',
   plugins: ['serverless-esbuild','serverless-offline'],
   provider: {
