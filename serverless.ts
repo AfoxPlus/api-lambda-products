@@ -20,14 +20,12 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      //MONGODB: '${self:custom.env.${opt:stage}.MONGODBCONNECTION}',
-      //JWT_SECRET: '${self:custom.env.${opt:stage}.JWT_SECRET}',
+      MONGODB: '${self:custom.env.${opt:stage}.MONGODB_URL}',
       VERSION: '${self:custom.version}',
       STAGE: '${opt:stage}',
     },
     lambdaHashingVersion: '20201221',
   },
-  // import the function via paths
   functions: {filter, strategy, stock, search},
   package: { individually: true },
   custom: {

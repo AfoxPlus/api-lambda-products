@@ -2,8 +2,10 @@ import { formatJSONSuccessResponse, ValidatedEventAPIGatewayProxyEvent } from '@
 import { middyfy } from '@libs/lambda'
 import mockData from './mock.json'
 import schema from './schema'
+import { mongodbconnect } from '@core/utils/mongodb_connection'
 
 const filter: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () =>  {
+    await mongodbconnect()
     return formatJSONSuccessResponse({
       success: true,
       payload: mockData,
