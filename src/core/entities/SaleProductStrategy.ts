@@ -1,3 +1,7 @@
+import { Restaurant } from "@core/entities/Restaurant";
+
 export interface SaleProductStrategy {
-    strategyCode: string
+    code: string,
+    restaurant: Restaurant,
+    parameters: {}
 }
