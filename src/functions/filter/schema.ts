@@ -1,8 +1,8 @@
 export default {
     type: "object",
     properties: {
-      input_search: { type: 'string' }
+      name: { type: 'string' }
     },
-    required: ['input_search']
+    required: ['name']
   } as const;
   

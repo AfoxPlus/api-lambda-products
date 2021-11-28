@@ -2,7 +2,7 @@ import { formatJSONSuccessResponse, ValidatedEventAPIGatewayProxyEvent } from '@
 import { middyfy } from '@libs/lambda'
 import schema from '@functions/register/schema'
 import { mongodbconnect } from '@core/utils/mongodb_connection'
-import { ProductRegister } from '@core/entities/ProductRegister'
+import { ProductRegister } from '@core/repositories/models/request/ProductRegister'
 import {ProductRepository} from '@core/repositories/ProductRepository'
 import { MongoDBProductRepository } from '@core/repositories/database/MongoDBProductRepository'
 
