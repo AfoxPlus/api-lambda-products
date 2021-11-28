@@ -1,3 +1,4 @@
 export interface QueryProduct {
-    name: string
+    restaurant_code: string,
+    product_name: string
 }

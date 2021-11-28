@@ -12,7 +12,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     filter = async (query: QueryProduct): Promise<Product[]> =>  {
         try {
-            const productDocuments: ProductDocument[] = await  ProductModel.find({name: { $regex: '.*' + query.name + '.*' } }).
+            const productDocuments: ProductDocument[] = await  ProductModel.find({restaurant: query.restaurant_code, name: { $regex: '.*' + query.product_name + '.*' } }).
             populate({ path: 'measure', model: MeasureModel}).
             populate({ path: 'currency', model: CurrencyModel}).
             populate({ path: 'saleStrategy', model: SaleProductStrategyModel, 
