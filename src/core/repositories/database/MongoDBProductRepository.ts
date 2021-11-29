@@ -15,12 +15,13 @@ export class MongoDBProductRepository implements ProductRepository {
             const productDocuments: ProductDocument[] = await  ProductModel.find({restaurant: restaurantCode}).
             populate({ path: 'measure', model: MeasureModel}).
             populate({ path: 'currency', model: CurrencyModel}).
-            populate({ path: 'productType', model: ProductTypeModel, match: { code: "PRODUCT_APPETIZER" }})
-            const products: Product[] = this.documentsWithOutStrategyToProducts(productDocuments)
+            populate({ path: 'productType', model: ProductTypeModel})
+            const filterDocuments = productDocuments.filter((document) => document.productType.code === "PRODUCT_APPETIZER")
+            const products: Product[] = this.documentsWithOutStrategyToProducts(filterDocuments)
             return products
         }catch(err) {
             console.log(err)
-            throw new Error("Method not implemented.")
+            throw new Error("Internal Error")
         }
     }
 
@@ -31,8 +32,9 @@ export class MongoDBProductRepository implements ProductRepository {
             populate({ path: 'currency', model: CurrencyModel}).
             populate({ path: 'saleStrategy', model: SaleProductStrategyModel,
                 populate: { path: 'restaurant', model: RestaurantModel, select: 'name' } }).
-            populate({ path: 'productType', model: ProductTypeModel,  match: { code: "PRODUCT_OFFER" }})
-            const products: Product[] = this.documentsWithStrategyToProducts(productDocuments)
+            populate({ path: 'productType', model: ProductTypeModel})
+            const filterDocuments = productDocuments.filter((document) => document.productType.code === "PRODUCT_OFFER")
+            const products: Product[] = this.documentsWithStrategyToProducts(filterDocuments)
             return products
         }catch(err) {
             console.log(err)
@@ -45,12 +47,13 @@ export class MongoDBProductRepository implements ProductRepository {
             const productDocuments: ProductDocument[] = await  ProductModel.find({restaurant: restaurantCode}).
             populate({ path: 'measure', model: MeasureModel}).
             populate({ path: 'currency', model: CurrencyModel}).
-            populate({ path: 'productType', model: ProductTypeModel,  match: { code: "PRODUCT_MENU" }})
-            const products: Product[] = this.documentsWithOutStrategyToProducts(productDocuments)
+            populate({ path: 'productType', model: ProductTypeModel})
+            const filterDocuments = productDocuments.filter((document) => document.productType.code === "PRODUCT_MENU")
+            const products: Product[] = this.documentsWithOutStrategyToProducts(filterDocuments)
             return products
         }catch(err) {
             console.log(err)
-            throw new Error("Method not implemented.")
+            throw new Error("Internal Error")
         }
     }
 
@@ -61,8 +64,9 @@ export class MongoDBProductRepository implements ProductRepository {
             populate({ path: 'currency', model: CurrencyModel}).
             populate({ path: 'saleStrategy', model: SaleProductStrategyModel,
                 populate: { path: 'restaurant', model: RestaurantModel, select: 'name' } }).
-            populate({ path: 'productType', model: ProductTypeModel, match: { code: "PRODUCT_HOME_OFFER" }})
-            const products: Product[] = this.documentsWithStrategyToProducts(productDocuments)
+            populate({ path: 'productType', model: ProductTypeModel})
+            const filterDocuments = productDocuments.filter((document) => document.productType.code === "PRODUCT_HOME_OFFER")
+            const products: Product[] = this.documentsWithStrategyToProducts(filterDocuments)
             return products
         }catch(err) {
             console.log(err)
@@ -75,8 +79,9 @@ export class MongoDBProductRepository implements ProductRepository {
             const productDocuments: ProductDocument[] = await  ProductModel.find({restaurant: query.restaurant_code, name: { $regex: '.*' + query.product_name + '.*' } }).
             populate({ path: 'measure', model: MeasureModel}).
             populate({ path: 'currency', model: CurrencyModel}).
-            populate({ path: 'productType', model: ProductTypeModel,  match: { code: "PRODUCT_SALE" } })
-            const products: Product[] = this.documentsWithOutStrategyToProducts(productDocuments)
+            populate({ path: 'productType', model: ProductTypeModel})
+            const filterDocuments = productDocuments.filter((document) => document.productType.code === "PRODUCT_SALE")
+            const products: Product[] = this.documentsWithOutStrategyToProducts(filterDocuments)
             return products
         }catch(err) {
             console.log(err)
