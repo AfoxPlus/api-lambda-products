@@ -1,10 +1,14 @@
-import type { AWS } from '@serverless/typescript';
+import type { AWS } from '@serverless/typescript'
 
 import filter from '@functions/filter'
 import strategy from '@functions/strategy'
 import stock from '@functions/stock'
 import search from '@functions/search'
 import register from '@functions/register'
+import appetizer from '@functions/appetizer'
+import home_offer from '@functions/home_offer'
+import sale_offer from '@functions/sale_offer'
+import menu from '@functions/menu'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
@@ -27,7 +31,17 @@ const serverlessConfiguration: AWS = {
     },
     lambdaHashingVersion: '20201221',
   },
-  functions: {filter, strategy, stock, search, register},
+  functions: {
+    filter,
+    strategy,
+    stock, 
+    search, 
+    register, 
+    appetizer, 
+    home_offer,
+    sale_offer,
+    menu
+  },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',
