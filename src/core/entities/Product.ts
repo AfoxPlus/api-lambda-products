@@ -13,5 +13,5 @@ export interface Product {
     measure: Measure,
     currency: Currency,
     productType: ProductType,
-    saleStrategy: SaleProductStrategy
+    saleStrategy?: SaleProductStrategy
 }

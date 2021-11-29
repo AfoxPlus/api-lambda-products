@@ -6,4 +6,8 @@ export interface ProductRepository {
     save(product: ProductRegister): Promise<boolean>
     saveAll(products: ProductRegister[]): Promise<boolean>
     filter(query: QueryProduct): Promise<Product[]>
+    fetchAppetizer(restaurantCode: string): Promise<Product[]>
+    fetchSaleOffer(restaurantCode: string): Promise<Product[]>
+    fetchMenu(restaurantCode: string): Promise<Product[]>
+    fetchHomeOffer(): Promise<Product[]>
 }
