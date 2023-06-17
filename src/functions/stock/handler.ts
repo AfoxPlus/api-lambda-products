@@ -1,14 +1,14 @@
 import { formatJSONSuccessResponse } from '@libs/apiGateway';
 import { middyfy } from '@libs/lambda';
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import * as mockData from './mock.json'
+import mockData from './mock.json'
 
-const strategy: APIGatewayProxyHandler = async () => {
+const stock: APIGatewayProxyHandler = async () => {
     return formatJSONSuccessResponse({
       success: true,
       payload: mockData,
-      message: `Hello GET Strategy products by description and restaurantID`
+      message: `Hello GET Stock products by description and restaurantID`
     });
   }
 
-export const main = middyfy(strategy);
+export const main = middyfy(stock);

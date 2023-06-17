@@ -1,12 +1,17 @@
-import type { AWS } from '@serverless/typescript';
+import type { AWS } from '@serverless/typescript'
 
-import filter from '@functions/product/filter'
-import strategy from '@functions/product/strategy'
-import stock from '@functions/product/stock'
-import search from '@functions/product/search'
+import filter from '@functions/filter'
+import strategy from '@functions/strategy'
+import stock from '@functions/stock'
+import search from '@functions/search'
+import register from '@functions/register'
+import appetizer from '@functions/appetizer'
+import home_offer from '@functions/home_offer'
+import sale_offer from '@functions/sale_offer'
+import menu from '@functions/menu'
 
 const serverlessConfiguration: AWS = {
-  service: 'api-nodejs-products',
+  service: 'api-lambda-products',
   frameworkVersion: '2',
   plugins: ['serverless-esbuild','serverless-offline'],
   provider: {
@@ -20,15 +25,23 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       NODE_OPTIONS: '--enable-source-maps --stack-trace-limit=1000',
-      //MONGODB: '${self:custom.env.${opt:stage}.MONGODBCONNECTION}',
-      //JWT_SECRET: '${self:custom.env.${opt:stage}.JWT_SECRET}',
+      MONGODB: '${self:custom.env.${opt:stage}.MONGODB_URL}',
       VERSION: '${self:custom.version}',
       STAGE: '${opt:stage}',
     },
     lambdaHashingVersion: '20201221',
   },
-  // import the function via paths
-  functions: {filter, strategy, stock, search},
+  functions: {
+    filter,
+    strategy,
+    stock, 
+    search, 
+    register, 
+    appetizer, 
+    home_offer,
+    sale_offer,
+    menu
+  },
   package: { individually: true },
   custom: {
     stage: '${opt:stage}',

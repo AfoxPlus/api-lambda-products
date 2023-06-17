@@ -1,4 +1,4 @@
-name: Deploy Dev
+name: Manual deploy Dev
 
 on: [workflow_dispatch]
 
@@ -9,31 +9,29 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: '16.x'
+        
     - name: Install Serverless Framework
       run: npm install -g serverless
+
     - name: Install NPM dependencies
       run: npm install
+
     - name: Serverless AWS authentication
       run: sls config credentials --provider aws --key ${{ secrets.AWS_KEY }} --secret ${{ secrets.AWS_SECRET }} --profile YaListoApp
+
     - name: Create env file
+      env:
+        MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+        MONGODB_USERNAME: "yalistoapp"
       run: |
         cat > env.json << EOF
         {
-          "prod": {
-            "MONGODBCONNECTION": "",
-            "JWT_SECRET": ""
-          },
           "dev": {
-            "MONGODBCONNECTION": "",
-            "JWT_SECRET": ""
+            "MONGODB_URL": "mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@clusterapp.2ozz0.mongodb.net/bd_yalisto_dev"
           }
         }
         EOF
-    - name: Print env.json
-      run: cat env.json
-    # Optional
-    #- name: Build assets
-    #  run: npm run assets-dev
+
     - name: Deploy Lambda functions
       run: serverless deploy --stage dev
