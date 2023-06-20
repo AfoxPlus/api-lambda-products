@@ -10,8 +10,9 @@ export interface Product {
     imageUrl: string,
     stock: Number,
     price: Number,
-    measure: Measure,
-    currency: Currency,
+    measure?: Measure,
+    currency?: Currency,
     productType: ProductType,
+    showInApp: Boolean,
     saleStrategy?: SaleProductStrategy
 }
