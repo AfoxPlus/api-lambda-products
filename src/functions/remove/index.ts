@@ -5,8 +5,8 @@ export default {
   events: [
     {
       http: {
-        method: 'post',
-        path: 'product/register'
+        method: 'delete',
+        path: 'product/{code}'
       }
     }
   ]

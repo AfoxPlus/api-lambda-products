@@ -12,9 +12,9 @@ export interface ProductDocument extends Document {
     stock: Number,
     price: Number,
     showInApp: Boolean,
-    measure: MeasureDocument,
-    currency: CurrencyDocument,
-    saleStrategy: SaleProductStrategyDocument,
+    measure?: MeasureDocument,
+    currency?: CurrencyDocument,
+    saleStrategy?: SaleProductStrategyDocument,
     productType: ProductTypeDocument,
     restaurant: RestaurantDocument
 }

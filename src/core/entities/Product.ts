@@ -4,7 +4,7 @@ import { ProductType } from "@core/entities/ProductType"
 import { SaleProductStrategy } from "@core/entities/SaleProductStrategy"
 
 export interface Product {
-    code: string,
+    code?: string,
     name: string,
     description: string,
     imageUrl: string,

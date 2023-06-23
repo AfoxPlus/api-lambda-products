@@ -1,13 +1,14 @@
 import type { AWS } from '@serverless/typescript'
 
 import filter from '@functions/filter'
-import register from '@functions/register'
+import createAndUpdate from '@functions/create_update'
 import appetizer from '@functions/appetizer'
 import home_offer from '@functions/home_offer'
 import sale_offer from '@functions/sale_offer'
 import menu from '@functions/menu'
 import product_type from '@functions/type'
 import search from '@functions/search'
+import remove from '@functions/remove'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
@@ -32,13 +33,14 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     filter,
-    register,
+    createAndUpdate,
     appetizer,
     home_offer,
     sale_offer,
     menu,
     product_type,
-    search
+    search,
+    remove
   },
   package: { individually: true },
   custom: {
