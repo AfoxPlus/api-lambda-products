@@ -1,15 +1,50 @@
-import { ProductRegister } from "@core/repositories/models/request/ProductRegister"
 import { ProductRepository } from "@core/repositories/ProductRepository"
 import { ProductDocument, ProductModel } from "@core/repositories/database/models/product.model"
 import { Product } from "@core/entities/Product"
 import { QueryProduct } from "@core/repositories/models/request/QueryProduct"
-import { MeasureModel } from "@core/repositories/database/models/measure.model"
+import { MeasureDocument, MeasureModel } from "@core/repositories/database/models/measure.model"
 import { CurrencyModel } from "@core/repositories/database/models/currency.model"
 import { SaleProductStrategyModel, RestaurantModel } from "@core/repositories/database/models/salestrategy.model"
 import { ProductTypeDocument, ProductTypeModel } from "@core/repositories/database/models/product_type"
 import { ProductType } from "@core/entities/ProductType"
 
 export class MongoDBProductRepository implements ProductRepository {
+
+    remove = async (productCode: string): Promise<Boolean> => {
+        try {
+            await ProductModel.findByIdAndRemove(productCode)
+            return true
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
+
+    save = async (product: Product, restaurantCode: string): Promise<Product> => {
+        try {
+            const measure: MeasureDocument = await MeasureModel.findOne()
+            const currency: MeasureDocument = await CurrencyModel.findOne()
+            const productDocument = this.productToDocument(product, measure._id.toString(), currency._id.toString(), restaurantCode)
+            const result = await ProductModel.create(productDocument)
+            return this.documentToProduct(result)
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
+
+    update = async (product: Product, restaurantCode: string): Promise<Product> => {
+        try {
+            const measure: MeasureDocument = await MeasureModel.findOne()
+            const currency: MeasureDocument = await CurrencyModel.findOne()
+            const productDocument = this.productToDocument(product, measure._id.toString(), currency._id.toString(), restaurantCode)
+            const result = await ProductModel.findOneAndUpdate({ _id: product.code }, productDocument)
+            return this.documentToProduct(result)
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
 
     searchProducts = async (restaurantCode: string): Promise<Product[]> => {
         try {
@@ -45,7 +80,6 @@ export class MongoDBProductRepository implements ProductRepository {
             const products: Product[] = this.documentsWithOutStrategyToProducts(filterDocuments)
             return products
         } catch (err) {
-            console.log(err)
             throw new Error("Internal Error")
         }
     }
@@ -64,7 +98,6 @@ export class MongoDBProductRepository implements ProductRepository {
             const products: Product[] = this.documentsWithStrategyToProducts(filterDocuments)
             return products
         } catch (err) {
-            console.log(err)
             throw new Error("Internal Error")
         }
     }
@@ -79,7 +112,6 @@ export class MongoDBProductRepository implements ProductRepository {
             const products: Product[] = this.documentsWithOutStrategyToProducts(filterDocuments)
             return products
         } catch (err) {
-            console.log(err)
             throw new Error("Internal Error")
         }
     }
@@ -98,7 +130,6 @@ export class MongoDBProductRepository implements ProductRepository {
             const products: Product[] = this.documentsWithStrategyToProducts(filterDocuments)
             return products
         } catch (err) {
-            console.log(err)
             throw new Error("Internal Error")
         }
     }
@@ -113,26 +144,7 @@ export class MongoDBProductRepository implements ProductRepository {
             const products: Product[] = this.documentsWithOutStrategyToProducts(filterDocuments)
             return products
         } catch (err) {
-            console.log(err)
             throw new Error("Internal Error")
-        }
-    }
-
-    save = async (product: ProductRegister): Promise<boolean> => {
-        try {
-            await ProductModel.create(product)
-            return true
-        } catch (err) {
-            throw new Error("Internal Error");
-        }
-    }
-
-    saveAll = async (products: ProductRegister[]): Promise<boolean> => {
-        try {
-            await ProductModel.insertMany(products)
-            return true
-        } catch (err) {
-            throw new Error("Internal Error");
         }
     }
 
@@ -174,16 +186,38 @@ export class MongoDBProductRepository implements ProductRepository {
     }
 
     private documentsToProducts(productDocuments: ProductDocument[]): Product[] {
-        const products: Product[] = productDocuments.map((document) => ({
-            code: document._id.toString(),
-            name: document.name,
-            description: document.description,
-            imageUrl: document.imageUrl,
-            stock: document.stock,
-            price: document.price,
-            showInApp: document.showInApp,
-            productType: { code: document.productType._id.toString(), name: document.productType.name }
-        }))
+        const products: Product[] = productDocuments.map((document) => this.documentToProduct(document))
         return products
+    }
+
+    private documentToProduct(productDocument: ProductDocument): Product {
+        const product: Product = {
+            code: productDocument._id.toString(),
+            name: productDocument.name,
+            description: productDocument.description,
+            imageUrl: productDocument.imageUrl,
+            stock: productDocument.stock,
+            price: productDocument.price,
+            showInApp: productDocument.showInApp,
+            productType: { code: productDocument.productType._id.toString(), name: productDocument.productType.name }
+        }
+        return product
+    }
+
+
+    private productToDocument(product: Product, measureCode: string, currencyCode: string, restaurantCode: string): any {
+        return {
+            _id: product.code,
+            name: product.name,
+            description: product.description,
+            imageUrl: product.imageUrl,
+            stock: product.stock,
+            price: product.price,
+            showInApp: product.showInApp,
+            measure: measureCode,
+            currency: currencyCode,
+            productType: product.productType.id,
+            restaurant: restaurantCode
+        }
     }
 }
