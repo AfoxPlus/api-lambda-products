@@ -4,14 +4,15 @@ import { ProductType } from "@core/entities/ProductType"
 import { SaleProductStrategy } from "@core/entities/SaleProductStrategy"
 
 export interface Product {
-    code: string,
+    code?: string,
     name: string,
     description: string,
     imageUrl: string,
     stock: Number,
     price: Number,
-    measure: Measure,
-    currency: Currency,
+    measure?: Measure,
+    currency?: Currency,
     productType: ProductType,
+    showInApp: Boolean,
     saleStrategy?: SaleProductStrategy
 }

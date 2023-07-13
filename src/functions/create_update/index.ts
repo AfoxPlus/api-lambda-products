@@ -6,7 +6,15 @@ export default {
     {
       http: {
         method: 'post',
-        path: 'product/register'
+        path: 'product',
+        cors: true
+      }
+    },
+    {
+      http: {
+        method: 'put',
+        path: 'product',
+        cors: true
       }
     }
   ]

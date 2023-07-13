@@ -11,22 +11,24 @@ export interface ProductDocument extends Document {
     imageUrl: string,
     stock: Number,
     price: Number,
-    measure: MeasureDocument,
-    currency: CurrencyDocument,
-    saleStrategy: SaleProductStrategyDocument,
+    showInApp: Boolean,
+    measure?: MeasureDocument,
+    currency?: CurrencyDocument,
+    saleStrategy?: SaleProductStrategyDocument,
     productType: ProductTypeDocument,
     restaurant: RestaurantDocument
 }
 
 const ProductSchema: Schema = new Schema({
-    name : {type: String, require: true}, 
-    description : String,
-    imageUrl : String,
-    stock : Number,
-    price: {type: Number, require: true},
+    name: { type: String, require: true },
+    description: String,
+    imageUrl: String,
+    stock: Number,
+    price: { type: Number, require: true },
+    showInApp: { type: Boolean, default: false },
     measure: { type: mongoose.Schema.Types.ObjectId, ref: 'Measure' },
     currency: { type: mongoose.Schema.Types.ObjectId, ref: 'Currency' },
-    saleStrategy: { type: mongoose.Schema.Types.ObjectId, ref: 'SaleProductStrategy'},
+    saleStrategy: { type: mongoose.Schema.Types.ObjectId, ref: 'SaleProductStrategy' },
     productType: { type: mongoose.Schema.Types.ObjectId, ref: 'ProductType' },
     restaurant: { type: mongoose.Schema.Types.ObjectId, ref: 'Restaurant' }
 })

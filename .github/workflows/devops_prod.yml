@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
-        node-version: '14.x'
+        node-version: '16.x'
         
     - name: Install Serverless Framework
       run: npm install -g serverless
@@ -31,10 +31,7 @@ jobs:
         cat > env.json << EOF
         {
           "prod": {
-            "MONGODB_URL": "mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@clusterapp.2ozz0.mongodb.net/bd_yalisto_prod?retryWrites=true&w=majority"
-          },
-          "dev": {
-            "MONGODB_URL": "mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@clusterapp.2ozz0.mongodb.net/bd_yalisto_dev?retryWrites=true&w=majority"
+            "MONGODB_URL": "mongodb+srv://${MONGODB_USERNAME}:${MONGODB_PASSWORD}@clusterapp.2ozz0.mongodb.net/bd_yalisto_prod"
           }
         }
         EOF

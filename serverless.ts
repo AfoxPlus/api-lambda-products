@@ -1,19 +1,19 @@
 import type { AWS } from '@serverless/typescript'
 
 import filter from '@functions/filter'
-import strategy from '@functions/strategy'
-import stock from '@functions/stock'
-import search from '@functions/search'
-import register from '@functions/register'
+import createAndUpdate from '@functions/create_update'
 import appetizer from '@functions/appetizer'
 import home_offer from '@functions/home_offer'
 import sale_offer from '@functions/sale_offer'
 import menu from '@functions/menu'
+import product_type from '@functions/type'
+import search from '@functions/search'
+import remove from '@functions/remove'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
   frameworkVersion: '2',
-  plugins: ['serverless-esbuild','serverless-offline'],
+  plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
     runtime: 'nodejs14.x',
@@ -33,14 +33,14 @@ const serverlessConfiguration: AWS = {
   },
   functions: {
     filter,
-    strategy,
-    stock, 
-    search, 
-    register, 
-    appetizer, 
+    createAndUpdate,
+    appetizer,
     home_offer,
     sale_offer,
-    menu
+    menu,
+    product_type,
+    search,
+    remove
   },
   package: { individually: true },
   custom: {
