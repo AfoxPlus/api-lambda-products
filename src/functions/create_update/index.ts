@@ -6,15 +6,13 @@ export default {
     {
       http: {
         method: 'post',
-        path: 'product',
-        cors: true
+        path: 'product'
       }
     },
     {
       http: {
         method: 'put',
-        path: 'product',
-        cors: true
+        path: 'product'
       }
     }
   ]
