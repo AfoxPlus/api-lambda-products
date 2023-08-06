@@ -6,6 +6,7 @@ import { middyfy } from '@libs/lambda';
 import { APIGatewayProxyHandler } from 'aws-lambda';
 
 const productTypes: APIGatewayProxyHandler = async (context) => {
+  console.log("productTypes")
   await mongodbconnect()
   const productRepository: ProductRepository = new MongoDBProductRepository()
   const { restaurant_code } = context.queryStringParameters

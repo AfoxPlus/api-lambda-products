@@ -14,7 +14,7 @@ const fetch: APIGatewayProxyHandler = async (context) => {
     return formatJSONSuccessResponse({
       success: true,
       payload: products,
-      message: "POST search products"
+      message: "Get search products"
     });
   } else return formatJSONSuccessResponse({
     success: false,

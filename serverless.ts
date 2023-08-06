@@ -1,4 +1,4 @@
-import type { AWS } from '@serverless/typescript'
+import type { AWS } from '@serverless/typescript';
 
 import filter from '@functions/filter'
 import createAndUpdate from '@functions/create_update'
@@ -12,7 +12,7 @@ import remove from '@functions/remove'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
-  frameworkVersion: '2',
+  frameworkVersion: '3',
   plugins: ['serverless-esbuild', 'serverless-offline'],
   provider: {
     name: 'aws',
@@ -29,7 +29,6 @@ const serverlessConfiguration: AWS = {
       VERSION: '${self:custom.version}',
       STAGE: '${opt:stage}',
     },
-    lambdaHashingVersion: '20201221',
   },
   functions: {
     filter,
