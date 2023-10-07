@@ -9,6 +9,15 @@ import { ProductTypeDocument, ProductTypeModel } from "@core/repositories/databa
 import { ProductType } from "@core/entities/ProductType"
 
 export class MongoDBProductRepository implements ProductRepository {
+    updateShowInApp = async (code: string, isShowInApp: Boolean): Promise<Boolean> => {
+        try {
+            await ProductModel.updateOne({ _id: code }, { showInApp: isShowInApp })
+            return true
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
 
     remove = async (productCode: string): Promise<Boolean> => {
         try {
