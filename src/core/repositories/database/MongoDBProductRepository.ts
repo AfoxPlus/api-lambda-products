@@ -57,7 +57,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     searchProducts = async (restaurantCode: string): Promise<Product[]> => {
         try {
-            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode }).
+            const productDocuments: ProductDocument[] = await ProductModel.find({ restaurant: restaurantCode }).
                 populate({ path: 'productType', model: ProductTypeModel })
             const products: Product[] = this.documentsToProducts(productDocuments)
             return products
