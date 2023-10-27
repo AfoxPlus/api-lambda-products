@@ -5,8 +5,9 @@ export default {
   events: [
     {
       http: {
-        method: 'get',
-        path: 'product/search'
+        method: 'put',
+        path: 'product/show_in_app',
+        cors: true
       }
     }
   ]

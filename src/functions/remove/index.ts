@@ -6,8 +6,7 @@ export default {
     {
       http: {
         method: 'delete',
-        path: 'product/{code}',
-        cors: true
+        path: 'product/{code}'
       }
     }
   ]

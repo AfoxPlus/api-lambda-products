@@ -9,6 +9,15 @@ import { ProductTypeDocument, ProductTypeModel } from "@core/repositories/databa
 import { ProductType } from "@core/entities/ProductType"
 
 export class MongoDBProductRepository implements ProductRepository {
+    updateShowInApp = async (code: string, isShowInApp: Boolean): Promise<Boolean> => {
+        try {
+            await ProductModel.updateOne({ _id: code }, { showInApp: isShowInApp })
+            return true
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
 
     remove = async (productCode: string): Promise<Boolean> => {
         try {
@@ -72,7 +81,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     fetchAppetizer = async (restaurantCode: string): Promise<Product[]> => {
         try {
-            const productDocuments: ProductDocument[] = await ProductModel.find({ restaurant: restaurantCode }).
+            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode }).
                 populate({ path: 'measure', model: MeasureModel }).
                 populate({ path: 'currency', model: CurrencyModel }).
                 populate({ path: 'productType', model: ProductTypeModel })
@@ -86,7 +95,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     fetchSaleOffer = async (restaurantCode: string): Promise<Product[]> => {
         try {
-            const productDocuments: ProductDocument[] = await ProductModel.find({ restaurant: restaurantCode }).
+            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode }).
                 populate({ path: 'measure', model: MeasureModel }).
                 populate({ path: 'currency', model: CurrencyModel }).
                 populate({
@@ -104,7 +113,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     fetchMenu = async (restaurantCode: string): Promise<Product[]> => {
         try {
-            const productDocuments: ProductDocument[] = await ProductModel.find({ restaurant: restaurantCode }).
+            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode }).
                 populate({ path: 'measure', model: MeasureModel }).
                 populate({ path: 'currency', model: CurrencyModel }).
                 populate({ path: 'productType', model: ProductTypeModel })
@@ -118,7 +127,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     fetchHomeOffer = async (): Promise<Product[]> => {
         try {
-            const productDocuments: ProductDocument[] = await ProductModel.find().
+            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true }).
                 populate({ path: 'measure', model: MeasureModel }).
                 populate({ path: 'currency', model: CurrencyModel }).
                 populate({
@@ -136,7 +145,7 @@ export class MongoDBProductRepository implements ProductRepository {
 
     filter = async (query: QueryProduct): Promise<Product[]> => {
         try {
-            const productDocuments: ProductDocument[] = await ProductModel.find({ restaurant: query.restaurant_code, name: { $regex: '.*' + query.product_name + '.*' } }).
+            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: query.restaurant_code, name: { $regex: '.*' + query.product_name + '.*' } }).
                 populate({ path: 'measure', model: MeasureModel }).
                 populate({ path: 'currency', model: CurrencyModel }).
                 populate({ path: 'productType', model: ProductTypeModel })
