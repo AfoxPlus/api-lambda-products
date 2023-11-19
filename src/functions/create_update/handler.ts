@@ -10,7 +10,7 @@ const create: ValidatedEventAPIGatewayProxyEvent<ProductRequest> = async (contex
   await mongodbconnect()
   const poductRepository: ProductRepository = new MongoDBProductRepository()
   const productRequest = context.body as ProductRequest
-  const { restaurant_code } = context.queryStringParameters
+  const { restaurant_code } = context.headers
 
   const product: Product = {
     code: productRequest.code,

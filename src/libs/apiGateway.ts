@@ -6,9 +6,7 @@ export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<ValidatedAPIGatewayP
 
 const corsHeaderConfig = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Access-Control-Allow-Credentials': 'true',
-  'Access-Control-Allow-Methods': 'OPTIONS, POST, GET, DELETE'
+  'Access-Control-Allow-Credentials': true
 }
 
 export const formatJSONSuccessResponse = (response: Record<string, unknown>) => {
