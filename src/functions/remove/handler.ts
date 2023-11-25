@@ -16,7 +16,7 @@ const filter: APIGatewayProxyHandler = async (context) => {
 
     return formatJSONSuccessResponse({
       success: true,
-      payload: {},
+      payload: { code: code },
       message: "Product remove successful"
     });
 

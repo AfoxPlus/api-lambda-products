@@ -35,7 +35,8 @@ const create: ValidatedEventAPIGatewayProxyEvent<ProductRequest> = async (contex
       productType: { id: productRequest.productType },
       showInApp: productRequest.showInApp
     }
-    result = await poductRepository.update(product, restaurant_code)
+    await poductRepository.update(product, restaurant_code)
+    result = product
   }
   return formatJSONSuccessResponse({
     success: result,
