@@ -13,11 +13,11 @@ import status from '@functions/status'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
-  frameworkVersion: '2',
-  plugins: ['serverless-esbuild', 'serverless-offline'],
+  frameworkVersion: '4',
+  plugins: ['serverless-offline'],
   provider: {
     name: 'aws',
-    runtime: 'nodejs14.x',
+    runtime: 'nodejs18.x',
     profile: '${self:custom.profile.${opt:stage}}',
     apiGateway: {
       minimumCompressionSize: 1024,
@@ -54,7 +54,7 @@ const serverlessConfiguration: AWS = {
       minify: false,
       sourcemap: true,
       exclude: ['aws-sdk'],
-      target: 'node14',
+      target: 'node18',
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
