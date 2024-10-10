@@ -10,26 +10,36 @@ const create: ValidatedEventAPIGatewayProxyEvent<ProductRequest> = async (contex
   await mongodbconnect()
   const poductRepository: ProductRepository = new MongoDBProductRepository()
   const productRequest = context.body as ProductRequest
-  const { restaurant_code } = context.queryStringParameters
+  const { restaurant_code } = context.headers
 
-  const product: Product = {
-    code: productRequest.code,
-    name: productRequest.name,
-    description: productRequest.description,
-    imageUrl: productRequest.imageUrl,
-    stock: productRequest.stock,
-    price: productRequest.price,
-    productType: { id: productRequest.productType },
-    showInApp: productRequest.showInApp
-  }
   let result = null
-  if (product.code == null) {
+  if (productRequest.code === undefined || productRequest.code === "" || productRequest.code == null) {
+    const product: Product = {
+      name: productRequest.name,
+      description: productRequest.description,
+      imageUrl: productRequest.imageUrl,
+      stock: productRequest.stock,
+      price: productRequest.price,
+      productType: { id: productRequest.productType },
+      showInApp: productRequest.showInApp
+    }
     result = await poductRepository.save(product, restaurant_code)
   } else {
+    const product: Product = {
+      code: productRequest.code,
+      name: productRequest.name,
+      description: productRequest.description,
+      imageUrl: productRequest.imageUrl,
+      stock: productRequest.stock,
+      price: productRequest.price,
+      productType: { id: productRequest.productType },
+      showInApp: productRequest.showInApp
+    }
     result = await poductRepository.update(product, restaurant_code)
   }
   return formatJSONSuccessResponse({
-    success: result,
+    success: true,
+    payload: result,
     message: "Successful"
   });
 }

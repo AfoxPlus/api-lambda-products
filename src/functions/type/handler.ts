@@ -8,7 +8,7 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 const productTypes: APIGatewayProxyHandler = async (context) => {
   await mongodbconnect()
   const productRepository: ProductRepository = new MongoDBProductRepository()
-  const { restaurant_code } = context.queryStringParameters
+  const { restaurant_code } = context.headers
   if (restaurant_code != undefined) {
     const productTypes = await productRepository.fetchProductTypes()
     return formatJSONSuccessResponse({

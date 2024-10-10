@@ -34,7 +34,9 @@ export class MongoDBProductRepository implements ProductRepository {
             const measure: MeasureDocument = await MeasureModel.findOne()
             const currency: MeasureDocument = await CurrencyModel.findOne()
             const productDocument = this.productToDocument(product, measure._id.toString(), currency._id.toString(), restaurantCode)
-            const result = await ProductModel.create(productDocument)
+            const productResult = await ProductModel.create(productDocument)
+            const result = await ProductModel.findById({ _id: productResult._id })
+                .populate({ path: 'productType', model: ProductTypeModel })
             return this.documentToProduct(result)
         } catch (err) {
             console.log(err)
@@ -47,7 +49,8 @@ export class MongoDBProductRepository implements ProductRepository {
             const measure: MeasureDocument = await MeasureModel.findOne()
             const currency: MeasureDocument = await CurrencyModel.findOne()
             const productDocument = this.productToDocument(product, measure._id.toString(), currency._id.toString(), restaurantCode)
-            const result = await ProductModel.findOneAndUpdate({ _id: product.code }, productDocument)
+            const result = await ProductModel.findByIdAndUpdate({ _id: product.code }, productDocument, { new: true })
+                .populate({ path: 'productType', model: ProductTypeModel })
             return this.documentToProduct(result)
         } catch (err) {
             console.log(err)
