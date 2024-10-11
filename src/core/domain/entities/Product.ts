@@ -1,7 +1,7 @@
-import { Measure } from "@core/entities/Measure"
-import { Currency } from "@core/entities/Currency"
-import { ProductType } from "@core/entities/ProductType"
-import { SaleProductStrategy } from "@core/entities/SaleProductStrategy"
+import { Measure } from "@core/domain/entities/Measure"
+import { Currency } from "@core/domain/entities/Currency"
+import { ProductType } from "@core/domain/entities/ProductType"
+import { SaleProductStrategy } from "@core/domain/entities/SaleProductStrategy"
 
 export interface Product {
     code?: string,

@@ -1,18 +1,15 @@
 import { formatJSONSuccessResponse, ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway'
 import { middyfy } from '@libs/lambda'
-import { mongodbconnect } from '@core/utils/mongodb_connection'
-import { ProductRepository } from '@core/repositories/ProductRepository'
-import { MongoDBProductRepository } from '@core/repositories/database/MongoDBProductRepository'
 import { ProductRequest } from '@functions/create_update/ProductRequest'
-import { Product } from '@core/entities/Product'
+import { ProductDI } from '@core/di/ProductModel'
+import { Product } from '@core/domain/entities/Product'
 
 const create: ValidatedEventAPIGatewayProxyEvent<ProductRequest> = async (context) => {
-  await mongodbconnect()
-  const poductRepository: ProductRepository = new MongoDBProductRepository()
+  const productRepository = ProductDI.productRepository
   const productRequest = context.body as ProductRequest
   const { restaurant_code } = context.headers
-
   let result = null
+  
   if (productRequest.code === undefined || productRequest.code === "" || productRequest.code == null) {
     const product: Product = {
       name: productRequest.name,
@@ -23,7 +20,13 @@ const create: ValidatedEventAPIGatewayProxyEvent<ProductRequest> = async (contex
       productType: { id: productRequest.productType },
       showInApp: productRequest.showInApp
     }
-    result = await poductRepository.save(product, restaurant_code)
+    result = await productRepository.save(product, restaurant_code).catch(err => {
+      return formatJSONSuccessResponse({
+        success: false,
+        payload: {},
+        message: err
+      });
+    })
   } else {
     const product: Product = {
       code: productRequest.code,
@@ -35,7 +38,13 @@ const create: ValidatedEventAPIGatewayProxyEvent<ProductRequest> = async (contex
       productType: { id: productRequest.productType },
       showInApp: productRequest.showInApp
     }
-    result = await poductRepository.update(product, restaurant_code)
+    result = await productRepository.update(product, restaurant_code).catch(err => {
+      return formatJSONSuccessResponse({
+        success: false,
+        payload: {},
+        message: err
+      });
+    })
   }
   return formatJSONSuccessResponse({
     success: true,

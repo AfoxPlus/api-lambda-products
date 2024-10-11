@@ -1,14 +1,14 @@
-import { ProductRepository } from "@core/repositories/ProductRepository"
-import { ProductDocument, ProductModel } from "@core/repositories/database/models/product.model"
-import { Product } from "@core/entities/Product"
-import { QueryProduct } from "@core/repositories/models/request/QueryProduct"
-import { MeasureDocument, MeasureModel } from "@core/repositories/database/models/measure.model"
-import { CurrencyModel } from "@core/repositories/database/models/currency.model"
-import { SaleProductStrategyModel, RestaurantModel } from "@core/repositories/database/models/salestrategy.model"
-import { ProductTypeDocument, ProductTypeModel } from "@core/repositories/database/models/product_type"
-import { ProductType } from "@core/entities/ProductType"
+import { Product } from "@core/domain/entities/Product"
+import { ProductType } from "@core/domain/entities/ProductType"
+import { QueryProduct } from "@core/data/sources/models/request/QueryProduct"
+import { CurrencyModel } from "@core/data/sources/database/models/currency.model"
+import { MeasureDocument, MeasureModel } from "@core/data/sources/database/models/measure.model"
+import { ProductModel, ProductDocument } from "@core/data/sources/database/models/product.model"
+import { ProductTypeModel, ProductTypeDocument } from "@core/data/sources/database/models/product_type"
+import { SaleProductStrategyModel, RestaurantModel } from "@core/data/sources/database/models/salestrategy.model"
 
-export class MongoDBProductRepository implements ProductRepository {
+
+export class ProductMongoDBDataSource  {
     updateShowInApp = async (code: string, isShowInApp: Boolean): Promise<Boolean> => {
         try {
             await ProductModel.updateOne({ _id: code }, { showInApp: isShowInApp })
@@ -171,7 +171,7 @@ export class MongoDBProductRepository implements ProductRepository {
             showInApp: document.showInApp,
             measure: { code: document.measure.code, value: document.measure.value },
             currency: { code: document.currency.code, value: document.currency.value },
-            productType: { code: document.productType.code, name: document.productType.name },
+            productType: { code: document.productType.code, name: document.productType.name},
             saleStrategy: {
                 code: document.saleStrategy.code,
                 restaurant: { code: document.saleStrategy.restaurant._id.toString(), name: document.saleStrategy.restaurant.name },
@@ -192,7 +192,7 @@ export class MongoDBProductRepository implements ProductRepository {
             showInApp: document.showInApp,
             measure: { code: document.measure.code, value: document.measure.value },
             currency: { code: document.currency.code, value: document.currency.value },
-            productType: { code: document.productType.code, name: document.productType.name }
+            productType: { code: document.productType.code, name: document.productType.name}
         }))
         return products
     }

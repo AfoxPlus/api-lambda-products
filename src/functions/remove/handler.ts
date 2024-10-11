@@ -1,17 +1,12 @@
+import { ProductDI } from '@core/di/ProductModel'
 import { formatJSONSuccessResponse } from '@libs/apiGateway'
 import { middyfy } from '@libs/lambda'
-import { mongodbconnect } from '@core/utils/mongodb_connection'
-import { ProductRepository } from '@core/repositories/ProductRepository'
-import { MongoDBProductRepository } from '@core/repositories/database/MongoDBProductRepository'
 import { APIGatewayProxyHandler } from 'aws-lambda/trigger/api-gateway-proxy'
 
 const filter: APIGatewayProxyHandler = async (context) => {
   try {
-
-    await mongodbconnect()
-
     const { code } = context.pathParameters
-    const productRepository: ProductRepository = new MongoDBProductRepository()
+    const productRepository = ProductDI.productRepository
     await productRepository.remove(code)
 
     return formatJSONSuccessResponse({

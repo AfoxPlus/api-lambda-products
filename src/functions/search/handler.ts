@@ -1,13 +1,10 @@
+import { ProductDI } from '@core/di/ProductModel'
 import { formatJSONSuccessResponse } from '@libs/apiGateway'
 import { middyfy } from '@libs/lambda'
-import { mongodbconnect } from '@core/utils/mongodb_connection'
-import { ProductRepository } from '@core/repositories/ProductRepository'
-import { MongoDBProductRepository } from '@core/repositories/database/MongoDBProductRepository'
 import { APIGatewayProxyHandler } from 'aws-lambda/trigger/api-gateway-proxy'
 
 const fetch: APIGatewayProxyHandler = async (context) => {
-  await mongodbconnect()
-  const productRepository: ProductRepository = new MongoDBProductRepository()
+  const productRepository = ProductDI.productRepository
   const { restaurant_code } = context.headers
   if (restaurant_code != undefined) {
     const products = await productRepository.searchProducts(restaurant_code)

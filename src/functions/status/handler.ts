@@ -1,13 +1,10 @@
 import { formatJSONSuccessResponse, ValidatedEventAPIGatewayProxyEvent } from '@libs/apiGateway'
-import { ProductRepository } from '@core/repositories/ProductRepository';
-import { MongoDBProductRepository } from '@core/repositories/database/MongoDBProductRepository';
-import { mongodbconnect } from '@core/utils/mongodb_connection';
 import { middyfy } from '@libs/lambda';
 import { ProductStateRequest } from '@functions/status/ProductStateRequest';
+import { ProductDI } from '@core/di/ProductModel';
 
 const productTypes: ValidatedEventAPIGatewayProxyEvent<ProductStateRequest> = async (context) => {
-  await mongodbconnect()
-  const productRepository: ProductRepository = new MongoDBProductRepository()
+  const productRepository = ProductDI.productRepository
   const productStatus = context.body as ProductStateRequest
   if (productStatus.code != undefined) {
     await productRepository.updateShowInApp(productStatus.code, productStatus.showInApp)

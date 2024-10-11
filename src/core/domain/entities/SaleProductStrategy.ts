@@ -1,4 +1,4 @@
-import { Restaurant } from "@core/entities/Restaurant";
+import { Restaurant } from "@core/domain/entities/Restaurant";
 
 export interface SaleProductStrategy {
     code: string,

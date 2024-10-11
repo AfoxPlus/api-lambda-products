@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Types } from 'mongoose'
-import { CurrencyDocument } from '@core/repositories/database/models/currency.model'
-import { MeasureDocument } from '@core/repositories/database/models/measure.model'
-import { RestaurantDocument, SaleProductStrategyDocument } from '@core/repositories/database/models/salestrategy.model'
-import { ProductTypeDocument } from '@core/repositories/database/models/product_type'
+import { MeasureDocument } from '@core/data/sources/database/models/measure.model'
+import { CurrencyDocument } from '@core/data/sources/database/models/currency.model'
+import { ProductTypeDocument } from '@core/data/sources/database/models/product_type'
+import { SaleProductStrategyDocument, RestaurantDocument } from '@core/data/sources/database/models/salestrategy.model'
 
 export interface ProductDocument extends Document {
     _id: Types.ObjectId

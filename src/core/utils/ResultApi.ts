@@ -1,1 +1,0 @@
-export class ResultApi<T> {payload: T}

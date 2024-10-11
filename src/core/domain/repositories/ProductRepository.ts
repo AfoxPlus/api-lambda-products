@@ -1,6 +1,6 @@
-import { QueryProduct } from "@core/repositories/models/request/QueryProduct";
-import { Product } from "@core/entities/Product";
-import { ProductType } from "@core/entities/ProductType";
+import { QueryProduct } from "@core/data/sources/models/request/QueryProduct"
+import { Product } from "@core/domain/entities/Product"
+import { ProductType } from "@core/domain/entities/ProductType"
 
 export interface ProductRepository {
     remove(productCode: string): Promise<Boolean>
