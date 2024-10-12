@@ -1,14 +1,64 @@
 import { Product } from "@core/domain/entities/Product"
 import { ProductType } from "@core/domain/entities/ProductType"
-import { QueryProduct } from "@core/data/sources/models/request/QueryProduct"
+import { QueryProduct } from "@core/domain/models/QueryProduct"
 import { CurrencyModel } from "@core/data/sources/database/models/currency.model"
 import { MeasureDocument, MeasureModel } from "@core/data/sources/database/models/measure.model"
 import { ProductModel, ProductDocument } from "@core/data/sources/database/models/product.model"
 import { ProductTypeModel, ProductTypeDocument } from "@core/data/sources/database/models/product_type"
 import { SaleProductStrategyModel, RestaurantModel } from "@core/data/sources/database/models/salestrategy.model"
+import { EstablishmentSection, MenuBDUI } from "@core/domain/models/MenuBDUI"
 
 
-export class ProductMongoDBDataSource  {
+export class ProductMongoDBDataSource {
+
+    getMenuBDUI = async (restaurantCode: string): Promise<MenuBDUI> => {
+        try {
+            const productsType: ProductTypeDocument[] = await ProductTypeModel
+                .find({ restaurant: restaurantCode })
+                .populate({ path: 'restaurant', model: RestaurantModel })
+                .sort({ "order": 1 })
+
+            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode })
+                .populate({ path: 'measure', model: MeasureModel })
+                .populate({ path: 'currency', model: CurrencyModel })
+                .populate({ path: 'productType', model: ProductTypeModel })
+
+            const establishmentSection: EstablishmentSection[] = []
+            productsType.forEach((item) => {
+                const filters = productDocuments.filter((doc) => doc.productType.id == item.id)
+                if (filters.length > 0) {
+                    const menuSection: EstablishmentSection = {
+                        sectionName: item.name,
+                        sectionBackgroundToken: "orange_25",
+                        sectionColorToken: "orange_700",
+                        productCardViewType: this.getCardViewType(item.gridColumnSize),
+                        productGridColumnSize: item.gridColumnSize,
+                        products: this.documentsWithOutStrategyToProducts(filters)
+                    }
+                    establishmentSection.push(menuSection)
+                }
+            })
+
+            const menuBDUI: MenuBDUI = {
+                establishment: productsType[0].restaurant.name,
+                establishmentType: "Sangucheria",
+                establishmentSection: establishmentSection
+            }
+
+            return menuBDUI
+        } catch (err) {
+            throw new Error("Internal Error")
+        }
+    }
+
+    private getCardViewType(gridColum): string {
+        if (gridColum > 1) {
+            return "VERTICAL"
+        } else {
+            return "HORIZONTAL"
+        }
+    }
+
     updateShowInApp = async (code: string, isShowInApp: Boolean): Promise<Boolean> => {
         try {
             await ProductModel.updateOne({ _id: code }, { showInApp: isShowInApp })
@@ -171,7 +221,7 @@ export class ProductMongoDBDataSource  {
             showInApp: document.showInApp,
             measure: { code: document.measure.code, value: document.measure.value },
             currency: { code: document.currency.code, value: document.currency.value },
-            productType: { code: document.productType.code, name: document.productType.name},
+            productType: { code: document.productType.code, name: document.productType.name },
             saleStrategy: {
                 code: document.saleStrategy.code,
                 restaurant: { code: document.saleStrategy.restaurant._id.toString(), name: document.saleStrategy.restaurant.name },
@@ -192,7 +242,7 @@ export class ProductMongoDBDataSource  {
             showInApp: document.showInApp,
             measure: { code: document.measure.code, value: document.measure.value },
             currency: { code: document.currency.code, value: document.currency.value },
-            productType: { code: document.productType.code, name: document.productType.name}
+            productType: { code: document.productType.code, name: document.productType.name }
         }))
         return products
     }

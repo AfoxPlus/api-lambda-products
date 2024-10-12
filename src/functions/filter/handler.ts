@@ -2,7 +2,7 @@ import { formatJSONSuccessResponse, ValidatedEventAPIGatewayProxyEvent } from '@
 import { middyfy } from '@libs/lambda'
 import schema from '@functions/filter/schema'
 import { ProductDI } from '@core/di/ProductModel'
-import { QueryProduct } from '@core/data/sources/models/request/QueryProduct'
+import { QueryProduct } from '@core/domain/models/QueryProduct'
 
 const filter: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (context) =>  {
     const {product_name} = context.body

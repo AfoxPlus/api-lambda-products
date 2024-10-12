@@ -10,6 +10,7 @@ import product_type from '@functions/type'
 import search from '@functions/search'
 import remove from '@functions/remove'
 import status from '@functions/status'
+import menu_v1 from '@functions/menu/v1'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
@@ -39,6 +40,7 @@ const serverlessConfiguration: AWS = {
     home_offer,
     sale_offer,
     menu,
+    menu_v1,
     product_type,
     search,
     remove,

@@ -4,12 +4,12 @@ import { middyfy } from '@libs/lambda';
 import { APIGatewayProxyHandler } from 'aws-lambda';
 
 const menu: APIGatewayProxyHandler = async (context) => {
-  const { restaurant_code } = context.headers
+  const {restaurant_code} = context.headers
   const productRepository = ProductDI.productRepository
-  const products = await productRepository.fetchMenu(restaurant_code)
+  const bdui = await productRepository.getMenuBDUI(restaurant_code)
   return formatJSONSuccessResponse({
     success: true,
-    payload: products,
+    payload: bdui,
     message: "GET Menu by restaurant code"
   });
 }
