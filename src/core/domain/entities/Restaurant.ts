@@ -1,4 +1,5 @@
 export interface Restaurant {
     code: string,
-    name: string
+    name: string,
+    type: string
 }

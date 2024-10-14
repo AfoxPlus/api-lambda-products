@@ -41,7 +41,7 @@ export class ProductMongoDBDataSource {
 
             const menuBDUI: MenuBDUI = {
                 establishment: productsType[0].restaurant.name,
-                establishmentType: "Sangucheria",
+                establishmentType: productsType[0].restaurant.type?.toString(),
                 establishmentSection: establishmentSection
             }
 
