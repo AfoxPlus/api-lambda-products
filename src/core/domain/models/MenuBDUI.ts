@@ -1,8 +1,8 @@
 import { Product } from "@core/domain/entities/Product"
 
 export interface MenuBDUI {
-    establishment: string
-    establishmentType: string
+    establishment?: string
+    establishmentType?: string
     establishmentSection: EstablishmentSection[]
 }
 
@@ -13,4 +13,4 @@ export interface EstablishmentSection {
     productCardViewType: string
     productGridColumnSize: number
     products: Product[]
-  }
+}

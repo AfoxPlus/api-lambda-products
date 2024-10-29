@@ -15,7 +15,6 @@ export class ProductMongoDBDataSource {
         try {
             const productsType: ProductTypeDocument[] = await ProductTypeModel
                 .find({ restaurant: restaurantCode })
-                .populate({ path: 'restaurant', model: RestaurantModel })
                 .sort({ "order": 1 })
 
             const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode })
@@ -40,8 +39,6 @@ export class ProductMongoDBDataSource {
             })
 
             const menuBDUI: MenuBDUI = {
-                establishment: productsType[0].restaurant.name,
-                establishmentType: productsType[0].restaurant.type?.toString(),
                 establishmentSection: establishmentSection
             }
 
