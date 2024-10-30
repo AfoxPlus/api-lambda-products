@@ -13,36 +13,43 @@ export class ProductMongoDBDataSource {
 
     getMenuBDUI = async (restaurantCode: string): Promise<MenuBDUI> => {
         try {
-            const productsType: ProductTypeDocument[] = await ProductTypeModel
-                .find({ restaurant: restaurantCode })
-                .sort({ "order": 1 })
+            const productsType = await ProductTypeModel.find({ restaurant: restaurantCode }).sort({ order: 1 });
 
-            const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode })
+            const productDocuments = await ProductModel.find({ showInApp: true, restaurant: restaurantCode })
                 .populate({ path: 'measure', model: MeasureModel })
                 .populate({ path: 'currency', model: CurrencyModel })
-                .populate({ path: 'productType', model: ProductTypeModel })
+                .populate({ path: 'productType', model: ProductTypeModel });
 
-            const establishmentSection: EstablishmentSection[] = []
-            productsType.forEach((item) => {
-                const filters = productDocuments.filter((doc) => doc.productType.id == item.id)
-                if (filters.length > 0) {
-                    const menuSection: EstablishmentSection = {
+            const productsMap = new Map<string, ProductDocument[]>();
+            productDocuments.forEach(doc => {
+                const typeId = doc.productType._id.toString();
+                if (!productsMap.has(typeId)) {
+                    productsMap.set(typeId, []);
+                }
+                productsMap.get(typeId)?.push(doc);
+            });
+
+            const establishmentSection: EstablishmentSection[] = productsType.map(item => {
+                const filteredProducts = productsMap.get(item._id.toString()) || [];
+                if (filteredProducts.length > 0) {
+                    return {
                         sectionName: item.name,
-                        sectionBackgroundToken: "orange_25",
-                        sectionColorToken: "orange_700",
+                        sectionBackgroundToken: item.sectionBackgroundToken,
+                        sectionColorToken: item.sectionColorToken,
                         productCardViewType: this.getCardViewType(item.gridColumnSize),
                         productGridColumnSize: item.gridColumnSize,
-                        products: this.documentsWithOutStrategyToProducts(filters)
-                    }
-                    establishmentSection.push(menuSection)
+                        products: this.documentsWithOutStrategyToProducts(filteredProducts)
+                    };
                 }
-            })
+                return null;
+            }).filter(section => section !== null);
 
             const menuBDUI: MenuBDUI = {
-                establishmentSection: establishmentSection
-            }
+                establishmentSection
+            };
 
-            return menuBDUI
+            return menuBDUI;
+
         } catch (err) {
             throw new Error("Internal Error")
         }
