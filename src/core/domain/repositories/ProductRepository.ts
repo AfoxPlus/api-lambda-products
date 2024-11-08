@@ -11,8 +11,8 @@ export interface ProductRepository {
     fetchSaleOffer(restaurantCode: string): Promise<Product[]>
     fetchMenu(restaurantCode: string): Promise<Product[]>
     fetchHomeOffer(): Promise<Product[]>
-    fetchProductTypes(): Promise<ProductType[]>
+    fetchProductTypes(restaurantCode: string): Promise<ProductType[]>
     searchProducts(restaurantCode: string): Promise<Product[]>
     updateShowInApp(code: string, isShowInApp: Boolean): Promise<Boolean>
-    getMenuBDUI(restaurantCode:string):Promise<MenuBDUI>
+    getMenuBDUI(restaurantCode: string): Promise<MenuBDUI>
 }

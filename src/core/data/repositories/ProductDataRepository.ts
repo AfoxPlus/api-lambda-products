@@ -7,25 +7,25 @@ import { MenuBDUI } from "@core/domain/models/MenuBDUI";
 
 export class ProductDataRepository implements ProductRepository {
 
-    constructor(private dataSource: ProductMongoDBDataSource) {}
+    constructor(private dataSource: ProductMongoDBDataSource) { }
 
     getMenuBDUI = async (restaurantCode: string): Promise<MenuBDUI> => {
         return await this.dataSource.getMenuBDUI(restaurantCode)
     }
 
-    remove = async (productCode: string): Promise<Boolean> =>  {
+    remove = async (productCode: string): Promise<Boolean> => {
         return await this.dataSource.remove(productCode)
     }
     save = async (product: Product, restaurantCode: string): Promise<Product> => {
         return await this.dataSource.save(product, restaurantCode)
     }
-    update = async (product: Product, restaurantCode: string): Promise<Product> =>  {
-       return await this.dataSource.update(product, restaurantCode)
+    update = async (product: Product, restaurantCode: string): Promise<Product> => {
+        return await this.dataSource.update(product, restaurantCode)
     }
     filter = async (query: QueryProduct): Promise<Product[]> => {
         return await this.dataSource.filter(query)
     }
-    fetchAppetizer = async (restaurantCode: string): Promise<Product[]> =>  {
+    fetchAppetizer = async (restaurantCode: string): Promise<Product[]> => {
         return await this.dataSource.fetchAppetizer(restaurantCode)
     }
     fetchSaleOffer = async (restaurantCode: string): Promise<Product[]> => {
@@ -34,16 +34,16 @@ export class ProductDataRepository implements ProductRepository {
     fetchMenu = async (restaurantCode: string): Promise<Product[]> => {
         return await this.dataSource.fetchMenu(restaurantCode)
     }
-    fetchHomeOffer = async (): Promise<Product[]> =>  {
+    fetchHomeOffer = async (): Promise<Product[]> => {
         return await this.dataSource.fetchHomeOffer()
     }
-    fetchProductTypes = async (): Promise<ProductType[]> => {
-        return await this.dataSource.fetchProductTypes()
+    fetchProductTypes = async (restaurantCode: string): Promise<ProductType[]> => {
+        return await this.dataSource.fetchProductTypes(restaurantCode)
     }
-    searchProducts = async(restaurantCode: string): Promise<Product[]> => {
+    searchProducts = async (restaurantCode: string): Promise<Product[]> => {
         return await this.dataSource.searchProducts(restaurantCode)
     }
-    updateShowInApp = async (code: string, isShowInApp: Boolean): Promise<Boolean> =>  {
+    updateShowInApp = async (code: string, isShowInApp: Boolean): Promise<Boolean> => {
         return await this.dataSource.updateShowInApp(code, isShowInApp)
     }
 

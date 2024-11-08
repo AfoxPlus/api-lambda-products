@@ -7,7 +7,7 @@ const productTypes: APIGatewayProxyHandler = async (context) => {
   const productRepository = ProductDI.productRepository
   const { restaurant_code } = context.headers
   if (restaurant_code != undefined) {
-    const productTypes = await productRepository.fetchProductTypes()
+    const productTypes = await productRepository.fetchProductTypes(restaurant_code)
     return formatJSONSuccessResponse({
       success: true,
       payload: productTypes,

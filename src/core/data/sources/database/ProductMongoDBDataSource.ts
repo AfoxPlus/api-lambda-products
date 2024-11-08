@@ -123,9 +123,9 @@ export class ProductMongoDBDataSource {
         }
     }
 
-    fetchProductTypes = async (): Promise<ProductType[]> => {
+    fetchProductTypes = async (restaurantCode: string): Promise<ProductType[]> => {
         try {
-            const productTypesDocuments: ProductTypeDocument[] = await ProductTypeModel.find()
+            const productTypesDocuments: ProductTypeDocument[] = await ProductTypeModel.find({ restaurant: restaurantCode }).sort({ order: 1 });
             const result: ProductType[] = productTypesDocuments.map((document) => ({
                 id: document._id.toString(),
                 name: document.name
