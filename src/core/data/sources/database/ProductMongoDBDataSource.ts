@@ -128,7 +128,9 @@ export class ProductMongoDBDataSource {
             const productTypesDocuments: ProductTypeDocument[] = await ProductTypeModel.find({ restaurant: restaurantCode }).sort({ order: 1 });
             const result: ProductType[] = productTypesDocuments.map((document) => ({
                 id: document._id.toString(),
-                name: document.name
+                tagCode: document.code,
+                name: document.name,
+                description: document.description ?? ''
             }))
             return result
         } catch (err) {

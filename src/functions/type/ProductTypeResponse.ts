@@ -1,6 +1,6 @@
-export interface ProductType {
+export interface ProductTypeResponse {
     id?: string,
-    tagCode: string,
+    tag_code: string,
     name: string,
     description?: string,
 }

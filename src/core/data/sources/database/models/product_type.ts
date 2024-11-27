@@ -5,6 +5,7 @@ export interface ProductTypeDocument extends Document {
     _id: Types.ObjectId,
     code: string,
     name: string,
+    description?: string,
     order: number,
     sectionBackgroundToken: string,
     sectionColorToken: string,
@@ -15,6 +16,7 @@ export interface ProductTypeDocument extends Document {
 const ProductTypeSchema: Schema = new Schema({
     code: { type: String, require: true },
     name: { type: String, require: true },
+    description: { type: String, require: true },
     order: { type: Number, require: false },
     gridColumnSize: { type: Number, require: false },
     sectionBackgroundToken: { type: String },
