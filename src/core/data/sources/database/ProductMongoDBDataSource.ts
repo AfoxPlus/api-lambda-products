@@ -7,6 +7,8 @@ import { ProductModel, ProductDocument } from "@core/data/sources/database/model
 import { ProductTypeModel, ProductTypeDocument } from "@core/data/sources/database/models/product_type"
 import { SaleProductStrategyModel, RestaurantModel } from "@core/data/sources/database/models/salestrategy.model"
 import { EstablishmentSection, MenuBDUI } from "@core/domain/models/MenuBDUI"
+import { Measure } from "@core/domain/entities/Measure"
+import { Currency } from "@core/domain/entities/Currency"
 
 
 export class ProductMongoDBDataSource {
@@ -128,7 +130,7 @@ export class ProductMongoDBDataSource {
             const productTypesDocuments: ProductTypeDocument[] = await ProductTypeModel.find({ restaurant: restaurantCode }).sort({ order: 1 });
             const result: ProductType[] = productTypesDocuments.map((document) => ({
                 id: document._id.toString(),
-                tagCode: document.code,
+                code: document.code,
                 name: document.name,
                 description: document.description ?? ''
             }))
@@ -225,9 +227,9 @@ export class ProductMongoDBDataSource {
             stock: document.stock,
             price: document.price,
             showInApp: document.showInApp,
-            measure: { code: document.measure.code, value: document.measure.value },
-            currency: { code: document.currency.code, value: document.currency.value },
-            productType: { code: document.productType.code, name: document.productType.name },
+            measure: this.getMeasureFromDocument(document),
+            currency: this.getCurrencyFromDocument(document),
+            productType: this.getProductTypeFromDocument(document),
             saleStrategy: {
                 code: document.saleStrategy.code,
                 restaurant: { code: document.saleStrategy.restaurant._id.toString(), name: document.saleStrategy.restaurant.name },
@@ -238,6 +240,7 @@ export class ProductMongoDBDataSource {
     }
 
     private documentsWithOutStrategyToProducts(productDocuments: ProductDocument[]): Product[] {
+
         const products: Product[] = productDocuments.map((document) => ({
             code: document._id.toString(),
             name: document.name,
@@ -246,11 +249,26 @@ export class ProductMongoDBDataSource {
             stock: document.stock,
             price: document.price,
             showInApp: document.showInApp,
-            measure: { code: document.measure.code, value: document.measure.value },
-            currency: { code: document.currency.code, value: document.currency.value },
-            productType: { code: document.productType.code, name: document.productType.name }
+            measure: this.getMeasureFromDocument(document),
+            currency: this.getCurrencyFromDocument(document),
+            productType: this.getProductTypeFromDocument(document)
         }))
         return products
+    }
+
+    private getMeasureFromDocument(document: ProductDocument): Measure {
+        const measure: Measure = { code: document.measure.code, value: document.measure.value }
+        return measure
+    }
+
+    private getCurrencyFromDocument(document: ProductDocument): Currency {
+        const currency: Currency = { code: document.currency.code, value: document.currency.value }
+        return currency
+    }
+
+    private getProductTypeFromDocument(document: ProductDocument): ProductType {
+        const productType: ProductType = { code: document.productType.code, name: document.productType.name }
+        return productType
     }
 
     private documentsToProducts(productDocuments: ProductDocument[]): Product[] {

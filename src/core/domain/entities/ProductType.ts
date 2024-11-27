@@ -1,6 +1,6 @@
 export interface ProductType {
     id?: string,
-    tagCode: string,
+    code: string,
     name: string,
     description?: string,
 }
