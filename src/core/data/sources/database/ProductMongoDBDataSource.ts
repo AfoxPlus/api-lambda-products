@@ -77,8 +77,54 @@ export class ProductMongoDBDataSource {
 
     remove = async (productCode: string): Promise<Boolean> => {
         try {
-            await ProductModel.findByIdAndRemove(productCode)
-            return true
+            const result = await ProductModel.deleteOne({ _id: productCode })
+            return result.deletedCount > 0
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
+
+    removeProductType = async (productTypeId: string): Promise<Boolean> => {
+        try {
+            const result = await ProductTypeModel.deleteOne({ _id: productTypeId });
+            return result.deletedCount > 0
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
+
+    saveProductType = async (productType: ProductType, restaurantCode: string): Promise<ProductType> => {
+        try {
+            const count = await ProductTypeModel.countDocuments();
+            const productTypeDocument = {
+                code: productType.code,
+                name: productType.name,
+                description: productType.description,
+                order: count + 1,
+                sectionBackgroundToken: "orange_25",
+                sectionColorToken: "orange_700",
+                gridColumnSize: 2,
+                restaurant: restaurantCode
+            }
+            const result = await ProductTypeModel.create(productTypeDocument)
+            return result
+        } catch (err) {
+            console.log(err)
+            throw new Error("Internal Error")
+        }
+    }
+
+    updateProductType = async (productType: ProductType): Promise<ProductType> => {
+        try {
+            const productTypeDocument = {
+                code: productType.code,
+                name: productType.name,
+                description: productType.description
+            }
+            const result = await ProductTypeModel.findByIdAndUpdate({ _id: productType.id }, productTypeDocument, { new: true })
+            return result
         } catch (err) {
             console.log(err)
             throw new Error("Internal Error")

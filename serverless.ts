@@ -11,6 +11,8 @@ import search from '@functions/search'
 import remove from '@functions/remove'
 import status from '@functions/status'
 import menu_v1 from '@functions/menu/v1'
+import product_type_create_update from '@functions/type/create_update'
+import product_type_remove from '@functions/type/remove'
 
 const serverlessConfiguration: AWS = {
   service: 'api-lambda-products',
@@ -44,7 +46,9 @@ const serverlessConfiguration: AWS = {
     product_type,
     search,
     remove,
-    status
+    status,
+    product_type_create_update,
+    product_type_remove
   },
   package: { individually: true },
   custom: {

@@ -15,4 +15,7 @@ export interface ProductRepository {
     searchProducts(restaurantCode: string): Promise<Product[]>
     updateShowInApp(code: string, isShowInApp: Boolean): Promise<Boolean>
     getMenuBDUI(restaurantCode: string): Promise<MenuBDUI>
+    saveProductType(productType: ProductType, restaurantCode: string): Promise<ProductType>
+    updateProductType(productType: ProductType): Promise<ProductType>
+    removeProductType(productTypeId: string): Promise<Boolean>
 }

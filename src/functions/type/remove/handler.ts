@@ -5,13 +5,13 @@ import { APIGatewayProxyHandler } from 'aws-lambda/trigger/api-gateway-proxy'
 
 const remove: APIGatewayProxyHandler = async (context) => {
   try {
-    const { code } = context.pathParameters
+    const { id } = context.pathParameters
     const productRepository = ProductDI.productRepository
-    await productRepository.remove(code)
+    await productRepository.removeProductType(id)
 
     return formatJSONSuccessResponse({
       success: true,
-      payload: { code: code },
+      payload: { id: id },
       message: "Product remove successful"
     });
 

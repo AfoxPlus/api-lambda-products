@@ -9,6 +9,18 @@ export class ProductDataRepository implements ProductRepository {
 
     constructor(private dataSource: ProductMongoDBDataSource) { }
 
+    removeProductType = async (productTypeId: string): Promise<Boolean> => {
+        return await this.dataSource.removeProductType(productTypeId)
+    }
+
+    saveProductType = async (productType: ProductType, restaurantCode: string): Promise<ProductType> => {
+        return await this.dataSource.saveProductType(productType, restaurantCode)
+    }
+
+    updateProductType = async (productType: ProductType): Promise<ProductType> => {
+        return await this.dataSource.updateProductType(productType)
+    }
+
     getMenuBDUI = async (restaurantCode: string): Promise<MenuBDUI> => {
         return await this.dataSource.getMenuBDUI(restaurantCode)
     }
