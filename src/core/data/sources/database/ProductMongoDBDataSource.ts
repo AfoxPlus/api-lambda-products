@@ -153,18 +153,18 @@ export class ProductMongoDBDataSource {
     fetchSaleOffer = async (restaurantCode: string): Promise<Product[]> => {
         try {
             const productDocuments: ProductDocument[] = await ProductModel.find({ showInApp: true, restaurant: restaurantCode }).
+                limit(5).
                 populate({ path: 'measure', model: MeasureModel }).
                 populate({ path: 'currency', model: CurrencyModel }).
                 populate({
                     path: 'saleStrategy', model: SaleProductStrategyModel,
                     populate: { path: 'restaurant', model: RestaurantModel, select: 'name' }
                 }).
-                populate({ path: 'productType', model: ProductTypeModel })
-            const filterDocuments = productDocuments.filter((document) => document.productType.code === "PRODUCT_OFFER")
-            const products: Product[] = this.documentsWithStrategyToProducts(filterDocuments)
-            return products
+                populate({ path: 'productType', model: ProductTypeModel });
+            const products: Product[] = this.documentsWithOutStrategyToProducts(productDocuments);
+            return products;
         } catch (err) {
-            throw new Error("Internal Error")
+            throw new Error("Internal Error");
         }
     }
 

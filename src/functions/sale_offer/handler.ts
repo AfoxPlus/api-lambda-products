@@ -4,14 +4,14 @@ import { middyfy } from '@libs/lambda';
 import { APIGatewayProxyHandler } from 'aws-lambda';
 
 const saleOffer: APIGatewayProxyHandler = async (context) => {
-  const {restaurant_code} = context.headers
+  const { code } = context.pathParameters
   const productRepository = ProductDI.productRepository
-  const products = await productRepository.fetchSaleOffer(restaurant_code)
+  const products = await productRepository.fetchSaleOffer(code)
   return formatJSONSuccessResponse({
     success: true,
     payload: products,
     message: "GET Sale Offer by restaurant code"
   });
-  }
+}
 
 export const main = middyfy(saleOffer);
